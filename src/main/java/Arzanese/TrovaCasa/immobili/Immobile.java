@@ -1,12 +1,13 @@
 package Arzanese.TrovaCasa.immobili;
 
-import Arzanese.TrovaCasa.auth_and_users.User;
 import Arzanese.TrovaCasa.appuntamenti.Appuntamento;
+import Arzanese.TrovaCasa.auth.AppUser;
 import Arzanese.TrovaCasa.immobili.immagini_immobili.ImmagineImmobile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class Immobile {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private AppUser user;
 
     @OneToMany(mappedBy = "immobile",cascade = CascadeType.ALL)
     private List<ImmagineImmobile> immagini;

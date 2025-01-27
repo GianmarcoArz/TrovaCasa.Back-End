@@ -1,20 +1,17 @@
-package Arzanese.TrovaCasa.auth_and_users;
+package Arzanese.TrovaCasa.auth;
 
 import Arzanese.TrovaCasa.immobili.Immobile;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-
-@Table(name = "\"user\"")
-public class User {
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +26,18 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    private String nome;
+    private String cognome;
     private String telefono;
 
     @Column(name = "data_registrazione")
-    private String dataRegistrazione;
+    private LocalDateTime dataRegistrazione;
 
     @OneToMany(mappedBy = "user")
     private List<Immobile> immobili;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Arzanese.TrovaCasa.auth.Role> roles;
 
 }
