@@ -1,4 +1,6 @@
 package Arzanese.TrovaCasa.immobili;
 
-public interface ImmobileRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ImmobileRepository extends JpaRepository<Immobile, Long> {
 }

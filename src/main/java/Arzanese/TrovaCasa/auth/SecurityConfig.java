@@ -1,8 +1,6 @@
 package Arzanese.TrovaCasa.auth;
 
-import Arzanese.TrovaCasa.auth.CustomUserDetailsService;
-import Arzanese.TrovaCasa.auth.JwtAuthenticationEntryPoint;
-import Arzanese.TrovaCasa.auth.JwtRequestFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

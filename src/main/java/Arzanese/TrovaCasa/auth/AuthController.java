@@ -18,17 +18,22 @@ public class AuthController {
 
     private final AppUserService appUserService;
 
+//    @PostMapping(path = "/register-user")
+//    public ResponseEntity<AppUser> registerUser(@RequestParam("appUser") String appUser){
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        RegisterRequest registerRequest;
+//
+//        try {
+//            registerRequest = objectMapper.readValue(appUser, RegisterRequest.class);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return new ResponseEntity<>(appUserService.registerUser(registerRequest, Set.of(Role.ROLE_USER)), HttpStatus.CREATED);
+//    }
+
     @PostMapping(path = "/register-user")
-    public ResponseEntity<AppUser> registerUser(@RequestParam("appUser") String appUser){
-        ObjectMapper objectMapper = new ObjectMapper();
-        RegisterRequest registerRequest;
-
-        try {
-            registerRequest = objectMapper.readValue(appUser, RegisterRequest.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
+    public ResponseEntity<AppUser> registerUser(@RequestBody RegisterRequest registerRequest) {
         return new ResponseEntity<>(appUserService.registerUser(registerRequest, Set.of(Role.ROLE_USER)), HttpStatus.CREATED);
     }
 

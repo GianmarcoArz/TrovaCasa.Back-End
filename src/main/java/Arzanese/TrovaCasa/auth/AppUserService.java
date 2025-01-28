@@ -21,26 +21,22 @@ public class AppUserService {
 
     @Autowired
     private AppUserRepository appUserRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
-    private Arzanese.TrovaCasa.auth.JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
 
     public AppUser registerUser(RegisterRequest registerRequest, Set<Role> roles) {
         if (appUserRepository.existsByUsername(registerRequest.getUsername())) {
             throw new EntityExistsException("Username già in uso");
         }
-
         registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         AppUser appUser = new AppUser();
         BeanUtils.copyProperties(registerRequest, appUser);
+        appUser.setDataRegistrazione(java.time.LocalDateTime.now());
         appUser.setRoles(roles);
-
         return appUserRepository.save(appUser);
     }
 
@@ -48,12 +44,11 @@ public class AppUserService {
         return appUserRepository.findByUsername(username);
     }
 
-    public String authenticateUser(String username, String password)  {
+    public String authenticateUser(String username, String password) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             return jwtTokenUtil.generateToken(userDetails);
         } catch (AuthenticationException e) {
@@ -61,12 +56,8 @@ public class AppUserService {
         }
     }
 
-
-    public AppUser loadUserByUsername(String username)  {
-        AppUser appUser = appUserRepository.findByUsername(username)
-            .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con username: " + username));
-
-
-        return appUser;
+    public AppUser loadUserByUsername(String username) {
+        return appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con username: " + username));
     }
 }
