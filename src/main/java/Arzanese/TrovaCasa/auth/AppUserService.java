@@ -1,6 +1,6 @@
 package Arzanese.TrovaCasa.auth;
 
-import Arzanese.TrovaCasa.auth.AppUserRepository;
+import Arzanese.TrovaCasa.auth.*;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -44,20 +44,32 @@ public class AppUserService {
         return appUserRepository.findByUsername(username);
     }
 
-    public String authenticateUser(String username, String password) {
+    public AuthResponse authenticateUser(String username, String password)  {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
+
+            AppUser appUser = loadUserByUsername(username);
+
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return jwtTokenUtil.generateToken(userDetails);
+
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setAccessToken(jwtTokenUtil.generateToken(userDetails));
+            authResponse.setAppUser(appUser);
+
+            return authResponse;
+
         } catch (AuthenticationException e) {
             throw new SecurityException("Credenziali non valide", e);
         }
-    }
+    } // Fine del metodo authenticateUser
 
     public AppUser loadUserByUsername(String username) {
         return appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Utente non trovato con username: " + username));
+    }
+
+    public void main() {
     }
 }

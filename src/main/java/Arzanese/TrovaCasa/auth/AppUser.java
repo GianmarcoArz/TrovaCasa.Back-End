@@ -1,6 +1,7 @@
 package Arzanese.TrovaCasa.auth;
 
 import Arzanese.TrovaCasa.immobili.Immobile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -34,6 +35,7 @@ public class AppUser {
     private LocalDateTime dataRegistrazione;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Immobile> immobili;
 
     @ElementCollection(fetch = FetchType.EAGER)

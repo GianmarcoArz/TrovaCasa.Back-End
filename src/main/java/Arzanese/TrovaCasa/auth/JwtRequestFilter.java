@@ -23,7 +23,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private Arzanese.TrovaCasa.auth.JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -34,31 +34,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwtToken = null;
 
-        // Verifica che il token sia presente e inizia con "Bearer "
+        // Estrae il token JWT dal header Authorization
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-
-            // Controllo che il token non sia vuoto o malformato
-            if (!jwtToken.contains(".") || jwtToken.split("\\.").length != 3) {
-                System.out.println("Token JWT malformato o non valido: " + jwtToken);
-                chain.doFilter(request, response);
-                return;
-            }
-
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Impossibile ottenere il token JWT");
             } catch (ExpiredJwtException e) {
                 System.out.println("Il token JWT è scaduto");
-            } catch (io.jsonwebtoken.MalformedJwtException e) {
-                System.out.println("Il token JWT è malformato: " + e.getMessage());
-                chain.doFilter(request, response);
-                return;
             }
         } else {
-            // Se l'header Authorization non inizia con Bearer
-            System.out.println("Il token JWT non inizia con Bearer o manca l'intestazione Authorization");
+            // logger.warn("Il token JWT non inizia con Bearer");
             chain.doFilter(request, response);
             return;
         }
@@ -76,5 +63,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-
 }
