@@ -92,4 +92,13 @@ public class ImmobileService {
         immobileRepository.deleteById(id);
     }
 
+    public List<Immobile> getAllImmobili() {
+        return immobileRepository.findAll();
+    }
+
+    public List<Immobile> getImmobiliByCurrentUser() {
+        AppUser currentUser = getCurrentUser(); // Ottiene l'utente attualmente loggato
+        return immobileRepository.findByUser(currentUser);
+    }
+
 }

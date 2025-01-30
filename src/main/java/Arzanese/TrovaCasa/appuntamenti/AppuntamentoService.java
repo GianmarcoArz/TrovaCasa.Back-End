@@ -88,6 +88,61 @@ public class AppuntamentoService {
         return appuntamentoRepository.save(appuntamento);
     }
 
+    // Aggiornare una disponibilità
+    public Appuntamento aggiornaDisponibilita(Long appuntamentoId, AppuntamentoDTO appuntamentoDTO) {
+        // Recupera l'appuntamento
+        Appuntamento appuntamento = appuntamentoRepository.findById(appuntamentoId)
+                .orElseThrow(() -> new EntityNotFoundException("Appuntamento non trovato con ID: " + appuntamentoId));
+
+        // Recupera l'utente autenticato
+        AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
+
+        // Verifica che l'utente autenticato sia il creatore dell'appuntamento
+        if (!appuntamento.getCreatoreAnnuncio().getId().equals(utenteAutenticato.getId())) {
+            throw new SecurityException("Non sei autorizzato a modificare questa disponibilità.");
+        }
+
+        // Aggiorna i campi dell'appuntamento
+        appuntamento.setDataDisponibilita(appuntamentoDTO.getDataDisponibilita());
+        appuntamento.setOraInizio(appuntamentoDTO.getOraInizio());
+        appuntamento.setOraFine(appuntamentoDTO.getOraFine());
+
+        // Verifica validità degli orari
+        LocalTime oraInizio = parseTime(appuntamentoDTO.getOraInizio());
+        LocalTime oraFine = parseTime(appuntamentoDTO.getOraFine());
+        if (oraInizio.isAfter(oraFine) || oraInizio.equals(oraFine)) {
+            throw new IllegalArgumentException("L'ora di inizio deve essere prima dell'ora di fine!");
+        }
+
+        return appuntamentoRepository.save(appuntamento);
+    }
+
+    // Eliminare una disponibilità
+    public void eliminaDisponibilita(Long appuntamentoId) {
+        // Recupera l'appuntamento
+        Appuntamento appuntamento = appuntamentoRepository.findById(appuntamentoId)
+                .orElseThrow(() -> new EntityNotFoundException("Appuntamento non trovato con ID: " + appuntamentoId));
+
+        // Recupera l'utente autenticato
+        AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
+
+        // Verifica che l'utente autenticato sia il creatore dell'appuntamento
+        if (!appuntamento.getCreatoreAnnuncio().getId().equals(utenteAutenticato.getId())) {
+            throw new SecurityException("Non sei autorizzato a eliminare questa disponibilità.");
+        }
+
+        appuntamentoRepository.deleteById(appuntamentoId);
+    }
+
+
+
+    public List<Appuntamento> getAppuntamentiPrenotatiCreatore() {
+        // Recupera l'utente autenticato
+        AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
+
+        // Recupera gli appuntamenti prenotati dove l'utente è il creatore
+        return appuntamentoRepository.findByCreatoreAnnuncioAndPrenotatoTrue(utenteAutenticato);
+    }
 
 
     // Metodi di supporto per conversione
@@ -107,13 +162,6 @@ public class AppuntamentoService {
         }
     }
 
-    public List<Appuntamento> getAppuntamentiPrenotatiCreatore() {
-        // Recupera l'utente autenticato
-        AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
-
-        // Recupera gli appuntamenti prenotati dove l'utente è il creatore
-        return appuntamentoRepository.findByCreatoreAnnuncioAndPrenotatoTrue(utenteAutenticato);
-    }
 
 
 }

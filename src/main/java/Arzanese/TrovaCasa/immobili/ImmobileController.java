@@ -91,7 +91,17 @@ public class ImmobileController {
         } catch (SecurityException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-
     }
+
+    @GetMapping
+    public ResponseEntity<List<Immobile>> getAllImmobili() {
+        return new ResponseEntity<>(immobileService.getAllImmobili(), HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<List<Immobile>> getImmobiliByCurrentUser() {
+        return new ResponseEntity<>(immobileService.getImmobiliByCurrentUser(), HttpStatus.OK);
+    }
+
 }

@@ -42,4 +42,5 @@ public class AppUser {
     @Enumerated(EnumType.STRING)
     private Set<Arzanese.TrovaCasa.auth.Role> roles;
 
+
 }
