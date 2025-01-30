@@ -40,23 +40,56 @@ public class ImmobileService {
         return immobileRepository.save(immobile);
     }
 
-    public Optional<Immobile> getImmobileById(Long id) {
-        return immobileRepository.findById(id);
+    public Immobile updateImmobile(ImmobileDTO immobileDTO, Long id) {
+        // Recupero l'immobile esistente
+        Immobile existingImmobile = immobileRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Immobile non trovato con ID: " + id));
+
+        // Verifica se l'immobile appartiene all'utente corrente
+        AppUser currentUser = getCurrentUser();
+        if (!existingImmobile.getUser().getId().equals(currentUser.getId())) {
+            throw new SecurityException("Non sei autorizzato a modificare questo immobile.");
+        }
+
+        // Aggiorna solo i campi modificabili utilizzando i dati dal DTO
+        existingImmobile.setTitolo(immobileDTO.getTitolo());
+        existingImmobile.setDescrizione(immobileDTO.getDescrizione());
+        existingImmobile.setPrezzo(immobileDTO.getPrezzo());
+        existingImmobile.setMetriQuadri(immobileDTO.getMetriQuadri());
+        existingImmobile.setNumeroVani(immobileDTO.getNumeroVani());
+        existingImmobile.setPiano(immobileDTO.getPiano());
+        existingImmobile.setVia(immobileDTO.getVia());
+        existingImmobile.setCivico(immobileDTO.getCivico());
+        existingImmobile.setComune(immobileDTO.getComune());
+        existingImmobile.setProvincia(immobileDTO.getProvincia());
+        existingImmobile.setPostoAuto(immobileDTO.isPostoAuto());
+        existingImmobile.setGiardino(immobileDTO.isGiardino());
+        existingImmobile.setTerrazzo(immobileDTO.isTerrazzo());
+        existingImmobile.setAscensore(immobileDTO.isAscensore());
+        existingImmobile.setCantina(immobileDTO.isCantina());
+        existingImmobile.setRiscaldamento(immobileDTO.isRiscaldamento());
+        existingImmobile.setClimatizzazione(immobileDTO.isClimatizzazione());
+        existingImmobile.setAllarme(immobileDTO.isAllarme());
+        existingImmobile.setSorveglianza(immobileDTO.isSorveglianza());
+        existingImmobile.setStatoImmobile(immobileDTO.getStatoImmobile());
+
+        return immobileRepository.save(existingImmobile);
     }
 
-    public void deleteImmobile(Long id) {
+
+    public void deleteImmobileById(Long id) {
+        // Recupero l'immobile esistente
+        Immobile immobile = immobileRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Immobile non trovato con ID: " + id));
+
+        // Verifica se l'immobile appartiene all'utente corrente
+        AppUser currentUser = getCurrentUser();
+        if (!immobile.getUser().getId().equals(currentUser.getId())) {
+            throw new SecurityException("Non sei autorizzato a eliminare questo immobile.");
+        }
+
+        // Elimina l'immobile
         immobileRepository.deleteById(id);
     }
-
-    public Immobile updateImmobile(Immobile immobile) {
-        return immobileRepository.save(immobile);
-    }
-
-    public List<Immobile> getAllImmobili() {
-        return immobileRepository.findAll();
-    }
-
-
-
 
 }

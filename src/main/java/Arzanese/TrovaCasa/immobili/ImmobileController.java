@@ -71,38 +71,27 @@ public class ImmobileController {
         return ResponseEntity.ok(immagine);
     }
 
+    @PutMapping("/aggiorna_immobile/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<Immobile> updateImmobile(@RequestBody ImmobileDTO immobileDTO, @PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(immobileService.updateImmobile(immobileDTO, id));
+        } catch (SecurityException e) {
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+        }
+    }
 
 
+    @DeleteMapping("/elimina_immobile/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<Void> deleteImmobile(@PathVariable Long id) {
+        try {
+            immobileService.deleteImmobileById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (SecurityException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
 
-
-//    @GetMapping
-//    public ResponseEntity<List<Immobile>> getAllImmobili() {
-//        return new ResponseEntity<>(immobileService.getAllImmobili(), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/singolo_immobile")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//
-//    public ResponseEntity<Immobile> getImmobileById(@PathVariable Long id) {
-//        return immobileService.getImmobileById(id)
-//                .map(immobile -> new ResponseEntity<>(immobile, HttpStatus.OK))
-//                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-//    }
-//
-//    @DeleteMapping("/elimina_immobile")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//
-//    public ResponseEntity<Void> deleteImmobile(@PathVariable Long id) {
-//        immobileService.deleteImmobile(id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @PutMapping("/aggiorna_immobile")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//
-//    public ResponseEntity<Immobile> updateImmobile(@RequestBody Immobile immobile) {
-//        return ResponseEntity.ok(immobileService.updateImmobile(immobile));
-//    }
-
+    }
 }
