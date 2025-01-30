@@ -1,5 +1,6 @@
 package Arzanese.TrovaCasa.appuntamenti;
 
+import Arzanese.TrovaCasa.auth.AppUser;
 import Arzanese.TrovaCasa.immobili.Immobile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Table(name = "disponibilita_appuntamenti")
+@Table(name = "appuntamenti")
 public class Appuntamento {
 
     @Id
@@ -22,13 +23,13 @@ public class Appuntamento {
     private Long id;
 
     @Column(name = "data_disponibilita")
-    private LocalDate dataDisponibilita;
+    private String dataDisponibilita;
 
     @Column(name = "ora_inizio")
-    private LocalTime oraInizio;
+    private String oraInizio;
 
     @Column(name = "ora_fine")
-    private LocalTime oraFine;
+    private String oraFine;
 
     @Column(name = "e_prenotato")
     private Boolean Prenotato;
@@ -37,4 +38,7 @@ public class Appuntamento {
     @JoinColumn(name = "immobile_id")
     private Immobile immobile;
 
+    @ManyToOne
+    @JoinColumn(name = "utente_id")
+    private AppUser utentePrenotato;
 }
