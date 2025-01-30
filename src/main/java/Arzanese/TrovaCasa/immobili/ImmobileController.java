@@ -93,7 +93,7 @@ public class ImmobileController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/lista_Immobili")
     public ResponseEntity<List<Immobile>> getAllImmobili() {
         return new ResponseEntity<>(immobileService.getAllImmobili(), HttpStatus.OK);
     }
