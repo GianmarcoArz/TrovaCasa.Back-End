@@ -27,22 +27,20 @@ public class AppuntamentoController {
     }
 
 
-
-
-    // Endpoint per recuperare le disponibilità di un immobile
-//    @GetMapping("/{immobileId}/disponibilita")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<List<Appuntamento>> getDisponibilita(@PathVariable Long immobileId) {
-//        List<Appuntamento> disponibilita = appuntamentoService.getDisponibilitaByImmobile(immobileId);
-//        return ResponseEntity.ok(disponibilita);
-//    }
-
     @PostMapping("/{appuntamentoId}/prenota")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<Appuntamento> prenota(@PathVariable Long appuntamentoId) {
         Appuntamento appuntamento = appuntamentoService.prenotaAppuntamento(appuntamentoId);
         return ResponseEntity.ok(appuntamento);
     }
+
+    @GetMapping("/prenotazioni")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<List<Appuntamento>> getAppuntamentiPrenotatiCreatore() {
+        List<Appuntamento> appuntamentiPrenotati = appuntamentoService.getAppuntamentiPrenotatiCreatore();
+        return ResponseEntity.ok(appuntamentiPrenotati);
+    }
+
 }
 
 

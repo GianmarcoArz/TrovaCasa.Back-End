@@ -11,7 +11,9 @@ public class AppuntamentoDTO {
     private String dataDisponibilita; // Formato: "yyyy-MM-dd"
     private String oraInizio;         // Formato: "HH:mm"
     private String oraFine;           // Formato: "HH:mm"
-    private Boolean prenotato;
-    // Identificativo immobile associato
+    private Boolean prenotato;        // Identificativo immobile associato
+    private Long creatoreAnnuncioId;  // ID del creatore dell'annuncio
+    private Long utentePrenotatoId;   // ID dell'utente che ha prenotato
+
 }
 

@@ -2,6 +2,7 @@ package Arzanese.TrovaCasa.appuntamenti;
 
 import Arzanese.TrovaCasa.auth.AppUser;
 import Arzanese.TrovaCasa.immobili.Immobile;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,13 +33,20 @@ public class Appuntamento {
     private String oraFine;
 
     @Column(name = "e_prenotato")
-    private Boolean Prenotato;
+    private Boolean prenotato;
 
     @ManyToOne
     @JoinColumn(name = "immobile_id")
+    @JsonBackReference
     private Immobile immobile;
 
+
     @ManyToOne
-    @JoinColumn(name = "utente_id")
-    private AppUser utentePrenotato;
+    @JoinColumn(name = "creatore_annuncio_id")
+    private AppUser creatoreAnnuncio; // Utente che ha creato l'annuncio
+
+    @ManyToOne
+    @JoinColumn(name = "utente_prenotato_id")
+    private AppUser utentePrenotato; // Utente che effettua la prenotazione
+
 }

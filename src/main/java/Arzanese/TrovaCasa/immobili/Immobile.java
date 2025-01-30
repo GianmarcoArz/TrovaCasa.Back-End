@@ -4,6 +4,7 @@ import Arzanese.TrovaCasa.appuntamenti.Appuntamento;
 import Arzanese.TrovaCasa.auth.AppUser;
 import Arzanese.TrovaCasa.auth.TipoUser;
 import Arzanese.TrovaCasa.immobili.immagini_immobili.ImmagineImmobile;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -80,5 +81,6 @@ public class Immobile {
     private List<ImmagineImmobile> immagini;
 
     @OneToMany(mappedBy = "immobile",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Appuntamento> disponibilita;
 }

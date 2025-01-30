@@ -60,19 +60,12 @@ public class AppuntamentoService {
         appuntamento.setOraFine(String.valueOf(oraFine));
         appuntamento.setPrenotato(false); // Disponibile di default
         appuntamento.setImmobile(immobile); // Associa l'immobile
-        appuntamento.setUtentePrenotato(utenteAutenticato); // Associa il proprietario
+        appuntamento.setCreatoreAnnuncio(utenteAutenticato); // Associa il creatore dell'annuncio
 
         return appuntamentoRepository.save(appuntamento);
     }
 
 
-    // Recuperare appuntamenti disponibili (semplice esempio)
-//    public List<Appuntamento> getDisponibilitaByImmobile(Long immobileId) {
-//        return appuntamentoRepository.findAll()
-//                .stream()
-//                .filter(app -> app.getImmobile().getId().equals(immobileId) && !app.getPrenotato())
-//                .toList();
-//    }
 
     // Prenotare un appuntamento associando l'utente autenticato
     public Appuntamento prenotaAppuntamento(Long appuntamentoId) {
@@ -88,12 +81,14 @@ public class AppuntamentoService {
         // Recupera l'utente autenticato
         AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
 
-        // Segna l'appuntamento come prenotato e associa l'utente
+        // Segna l'appuntamento come prenotato e associa l'utente prenotante
         appuntamento.setPrenotato(true);
         appuntamento.setUtentePrenotato(utenteAutenticato);
 
         return appuntamentoRepository.save(appuntamento);
     }
+
+
 
     // Metodi di supporto per conversione
     private LocalDate parseDate(String date) {
@@ -111,5 +106,14 @@ public class AppuntamentoService {
             throw new IllegalArgumentException("Formato ora non valido! Usa 'HH:mm'.");
         }
     }
+
+    public List<Appuntamento> getAppuntamentiPrenotatiCreatore() {
+        // Recupera l'utente autenticato
+        AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
+
+        // Recupera gli appuntamenti prenotati dove l'utente è il creatore
+        return appuntamentoRepository.findByCreatoreAnnuncioAndPrenotatoTrue(utenteAutenticato);
+    }
+
 
 }
