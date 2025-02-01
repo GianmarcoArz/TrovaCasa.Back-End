@@ -57,19 +57,20 @@ public class ImmobileController {
 
     @PostMapping(value = "/{immobileId}/upload_immagine", consumes = "multipart/form-data")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    public ResponseEntity<ImmagineImmobile> uploadImmagine(
+    public ResponseEntity<List<ImmagineImmobile>> uploadImmagini(
             @PathVariable Long immobileId,
-            @RequestParam("file") MultipartFile file,
+            @RequestParam("files") List<MultipartFile> files,
             @RequestParam(value = "copertina", required = false, defaultValue = "false") boolean copertina
     ) throws IOException {
-        ImmagineImmobile immagine = immagineImmobileService.uploadImmagine(
+        List<ImmagineImmobile> immagini = immagineImmobileService.uploadImmagini(
                 immobileId,
-                file,
+                files,
                 copertina
         );
 
-        return ResponseEntity.ok(immagine);
+        return ResponseEntity.ok(immagini);
     }
+
 
     @PutMapping("/aggiorna_immobile/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")

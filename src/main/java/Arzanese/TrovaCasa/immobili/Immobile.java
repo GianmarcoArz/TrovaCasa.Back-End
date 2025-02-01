@@ -78,6 +78,7 @@ public class Immobile {
     private AppUser user;
 
     @OneToMany(mappedBy = "immobile",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ImmagineImmobile> immagini;
 
     @OneToMany(mappedBy = "immobile",cascade = CascadeType.ALL)
