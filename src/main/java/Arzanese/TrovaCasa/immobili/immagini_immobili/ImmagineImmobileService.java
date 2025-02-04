@@ -49,4 +49,19 @@ public class ImmagineImmobileService {
         return immaginiSalvate;
     }
 
+    public List<ImmagineImmobileDTO> getImmaginiByImmobileId(Long immobileId) {
+        List<ImmagineImmobile> immagini = immagineImmobileRepository.findByImmobileId(immobileId);
+
+        // Mappiamo le entità nei DTO
+        return immagini.stream().map(immagine -> {
+            ImmagineImmobileDTO dto = new ImmagineImmobileDTO();
+            dto.setId(immagine.getId());
+            dto.setUrlImmagine(immagine.getUrlImmagine());
+            dto.setCopertina(immagine.getCopertina());
+            dto.setImmobileId(immagine.getImmobile().getId());
+            return dto;
+        }).toList();
+    }
+
+
 }
