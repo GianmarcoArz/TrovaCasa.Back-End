@@ -104,5 +104,9 @@ public class ImmobileController {
     public ResponseEntity<List<Immobile>> getImmobiliByCurrentUser() {
         return new ResponseEntity<>(immobileService.getImmobiliByCurrentUser(), HttpStatus.OK);
     }
-
+    @GetMapping("/{immobileId}")
+    public ResponseEntity<Immobile> getImmobileById(@PathVariable Long id) {
+        Immobile immobile = immobileService.getImmobileById(id);
+        return ResponseEntity.ok(immobile);
+    }
 }

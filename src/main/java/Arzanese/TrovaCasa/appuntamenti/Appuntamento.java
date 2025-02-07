@@ -43,10 +43,10 @@ public class Appuntamento {
 
     @ManyToOne
     @JoinColumn(name = "creatore_annuncio_id")
-    private AppUser creatoreAnnuncio; // Utente che ha creato l'annuncio
+    private AppUser creatoreAnnuncio;
 
     @ManyToOne
     @JoinColumn(name = "utente_prenotato_id")
-    private AppUser utentePrenotato; // Utente che effettua la prenotazione
+    private AppUser utentePrenotato;
 
 }

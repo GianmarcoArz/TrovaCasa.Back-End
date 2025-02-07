@@ -101,4 +101,9 @@ public class ImmobileService {
         return immobileRepository.findByUser(currentUser);
     }
 
+    public Immobile getImmobileById(Long id) {
+        return immobileRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Immobile non trovato con ID: " + id));
+    }
+
 }
