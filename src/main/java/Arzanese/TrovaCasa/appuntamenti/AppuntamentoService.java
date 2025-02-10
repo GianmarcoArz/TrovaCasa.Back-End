@@ -140,10 +140,15 @@ public class AppuntamentoService {
         // Recupera l'utente autenticato
         AppUser utenteAutenticato = appUserService.getUtenteAutenticato();
 
-        // Recupera gli appuntamenti prenotati dove l'utente è il creatore
-        return appuntamentoRepository.findByCreatoreAnnuncioAndPrenotatoTrue(utenteAutenticato);
-    }
+        // Recupera gli appuntamenti prenotati dove l'utente è il creatore o l'utente prenotato
+        List<Appuntamento> appuntamentiCreati = appuntamentoRepository.findByCreatoreAnnuncioAndPrenotatoTrue(utenteAutenticato);
+        List<Appuntamento> appuntamentiPrenotati = appuntamentoRepository.findByUtentePrenotato(utenteAutenticato);
 
+        // Unisce le due liste
+        appuntamentiCreati.addAll(appuntamentiPrenotati);
+
+        return appuntamentiCreati;
+    }
 
     // Metodi di supporto per conversione
     private LocalDate parseDate(String date) {
