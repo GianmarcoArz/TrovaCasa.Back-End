@@ -104,9 +104,16 @@ public class ImmobileController {
     public ResponseEntity<List<Immobile>> getImmobiliByCurrentUser() {
         return new ResponseEntity<>(immobileService.getImmobiliByCurrentUser(), HttpStatus.OK);
     }
+//    @GetMapping("/{immobileId}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    public ResponseEntity<Immobile> getImmobileById(@PathVariable Long id) {
+//        Immobile immobile = immobileService.getImmobileById(id);
+//        return ResponseEntity.ok(immobile);
+//    }
     @GetMapping("/{immobileId}")
-    public ResponseEntity<Immobile> getImmobileById(@PathVariable Long id) {
-        Immobile immobile = immobileService.getImmobileById(id);
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<Immobile> getImmobileById(@PathVariable("immobileId") Long immobileId) {
+        Immobile immobile = immobileService.getImmobileById(immobileId);
         return ResponseEntity.ok(immobile);
     }
 }
