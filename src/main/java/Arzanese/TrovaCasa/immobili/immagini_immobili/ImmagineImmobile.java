@@ -1,6 +1,7 @@
 package Arzanese.TrovaCasa.immobili.immagini_immobili;
 
 import Arzanese.TrovaCasa.immobili.Immobile;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,5 +26,6 @@ public class ImmagineImmobile {
 
     @ManyToOne
     @JoinColumn(name = "immobile_id")
+    @JsonBackReference
     private Immobile immobile;
 }

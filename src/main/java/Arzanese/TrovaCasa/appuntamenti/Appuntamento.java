@@ -1,6 +1,8 @@
 package Arzanese.TrovaCasa.appuntamenti;
 
+import Arzanese.TrovaCasa.auth.AppUser;
 import Arzanese.TrovaCasa.immobili.Immobile;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +16,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Table(name = "disponibilita_appuntamenti")
+@Table(name = "appuntamenti")
 public class Appuntamento {
 
     @Id
@@ -22,19 +24,29 @@ public class Appuntamento {
     private Long id;
 
     @Column(name = "data_disponibilita")
-    private LocalDate dataDisponibilita;
+    private String dataDisponibilita;
 
     @Column(name = "ora_inizio")
-    private LocalTime oraInizio;
+    private String oraInizio;
 
     @Column(name = "ora_fine")
-    private LocalTime oraFine;
+    private String oraFine;
 
     @Column(name = "e_prenotato")
-    private Boolean Prenotato;
+    private Boolean prenotato;
 
     @ManyToOne
     @JoinColumn(name = "immobile_id")
+    @JsonBackReference
     private Immobile immobile;
+
+
+    @ManyToOne
+    @JoinColumn(name = "creatore_annuncio_id")
+    private AppUser creatoreAnnuncio;
+
+    @ManyToOne
+    @JoinColumn(name = "utente_prenotato_id")
+    private AppUser utentePrenotato;
 
 }

@@ -23,7 +23,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private Arzanese.TrovaCasa.auth.JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
