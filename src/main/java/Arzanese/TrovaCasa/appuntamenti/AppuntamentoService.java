@@ -58,9 +58,9 @@ public class AppuntamentoService {
         appuntamento.setDataDisponibilita(String.valueOf(dataDisponibilita));
         appuntamento.setOraInizio(String.valueOf(oraInizio));
         appuntamento.setOraFine(String.valueOf(oraFine));
-        appuntamento.setPrenotato(false); // Disponibile di default
-        appuntamento.setImmobile(immobile); // Associa l'immobile
-        appuntamento.setCreatoreAnnuncio(utenteAutenticato); // Associa il creatore dell'annuncio
+        appuntamento.setPrenotato(false);
+        appuntamento.setImmobile(immobile);
+        appuntamento.setCreatoreAnnuncio(utenteAutenticato);
 
         return appuntamentoRepository.save(appuntamento);
     }
