@@ -23,24 +23,25 @@ public class AuthRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // Creazione dell'utente admin se non esiste
-//        Optional<AppUser> adminUser = appUserService.findByUsername("admin");
-//        if (adminUser.isEmpty()) {
-//            RegisterRequest adminRequest = new RegisterRequest();
-//            adminRequest.setUsername("");
-//            adminRequest.setPassword("");
-//            adminRequest.setEmail("");
-//
-//            appUserService.registerUser(adminRequest, Set.of(Role.ROLE_ADMIN));
-//        // Creazione dell'utente user se non esiste
-//        Optional<AppUser> normalUser = appUserService.findByUsername("user");
-//        if (normalUser.isEmpty()) {
-//            RegisterRequest userRequest = new RegisterRequest();
-//            userRequest.setUsername("");
-//            userRequest.setPassword("");
-//            userRequest.setEmail("");
-//
-//            appUserService.registerUser(userRequest, Set.of(Role.ROLE_USER));
-//        }
+        Optional<AppUser> adminUser = appUserService.findByUsername("admin");
+        if (adminUser.isEmpty()) {
+            RegisterRequest adminRequest = new RegisterRequest();
+            adminRequest.setUsername("");
+            adminRequest.setPassword("");
+            adminRequest.setEmail("");
+
+            appUserService.registerUser(adminRequest, Set.of(Role.ROLE_ADMIN));
+        // Creazione dell'utente user se non esiste
+        Optional<AppUser> normalUser = appUserService.findByUsername("user");
+        if (normalUser.isEmpty()) {
+            RegisterRequest userRequest = new RegisterRequest();
+            userRequest.setUsername("");
+            userRequest.setPassword("");
+            userRequest.setEmail("");
+
+            appUserService.registerUser(userRequest, Set.of(Role.ROLE_USER));
+        }
+        }
     }
-    }
+}
 
