@@ -5,6 +5,7 @@ import Arzanese.TrovaCasa.auth.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Component
+@Profile("!prod")
 public class AuthRunner implements ApplicationRunner {
 
     @Autowired
