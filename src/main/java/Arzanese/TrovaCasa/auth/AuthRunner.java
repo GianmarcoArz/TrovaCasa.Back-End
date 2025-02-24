@@ -29,7 +29,7 @@ public class AuthRunner implements ApplicationRunner {
         if (adminUser.isEmpty()) {
             RegisterRequest adminRequest = new RegisterRequest();
             adminRequest.setUsername("admin");
-            adminRequest.setPassword("");
+            adminRequest.setPassword("adminpwd");
             adminRequest.setEmail("admin@info.it");
 
             appUserService.registerUser(adminRequest, Set.of(Role.ROLE_ADMIN));
